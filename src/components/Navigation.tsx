@@ -1,5 +1,6 @@
 import { useLanguage } from '@/contexts/LanguageContext';
 import { Button } from '@/components/ui/button';
+import duckLogo from '@/assets/duck-logo.png';
 
 export const Navigation = () => {
   const { language, setLanguage, t } = useLanguage();
@@ -17,9 +18,14 @@ export const Navigation = () => {
         <div className="flex gap-6 items-center">
           <button
             onClick={() => scrollToSection('hero')}
-            className="text-lg font-bold hover:text-accent transition-colors"
+            className="flex items-center gap-3 hover:opacity-80 transition-opacity group"
           >
-            {t('nav_home')}
+            <img 
+              src={duckLogo} 
+              alt="onebyone studio duck logo" 
+              className="w-12 h-12 rotate-chaos-1 group-hover:scale-110 transition-transform"
+            />
+            <span className="text-lg font-bold">onebyone studio</span>
           </button>
           <button
             onClick={() => scrollToSection('benefits')}

@@ -1,5 +1,6 @@
 import { useLanguage } from '@/contexts/LanguageContext';
 import { useEffect, useState } from 'react';
+import duckHero from '@/assets/duck-logo.png';
 
 export const HeroSection = () => {
   const { t } = useLanguage();
@@ -63,25 +64,23 @@ export const HeroSection = () => {
           {/* Duck visual */}
           <div className="relative h-96 animate-slide-in-right">
             <div className="absolute inset-0 flex items-center justify-center">
-              {/* Main duck shape - simplified geometric representation */}
               <div className="relative">
-                {/* Duck body */}
-                <div className="w-64 h-48 bg-accent rounded-full rotate-chaos-1 collage-shadow tape-effect" />
-                
-                {/* Duck head */}
-                <div className="absolute -top-16 left-1/2 -translate-x-1/2 w-32 h-32 bg-accent rounded-full rotate-chaos-2 collage-shadow" />
-                
-                {/* Duck beak */}
-                <div className="absolute -top-12 left-1/2 translate-x-8 w-16 h-8 bg-accent rotate-chaos-3 collage-shadow" 
-                     style={{ clipPath: 'polygon(0% 50%, 100% 0%, 100% 100%)' }} />
-                
-                {/* Duck eye */}
-                <div className="absolute -top-10 left-1/2 -translate-x-4 w-4 h-4 bg-foreground rounded-full" />
+                {/* Main duck collage image */}
+                <img 
+                  src={duckHero} 
+                  alt="Yellow duck in collage style with sunglasses" 
+                  className="w-80 h-80 object-contain rotate-chaos-1 collage-shadow tape-effect animate-float"
+                  style={{ animationDelay: '0.5s' }}
+                />
                 
                 {/* Collage overlay elements */}
-                <div className="absolute top-0 left-0 w-full h-full">
-                  <div className="absolute top-4 right-4 w-20 h-20 bg-paper rotate-12 collage-shadow paper-texture" />
-                  <div className="absolute bottom-8 left-8 w-24 h-16 bg-muted -rotate-6 collage-shadow" />
+                <div className="absolute top-0 left-0 w-full h-full pointer-events-none">
+                  <div className="absolute top-4 right-4 w-20 h-20 bg-paper rotate-12 collage-shadow paper-texture animate-float" 
+                       style={{ animationDelay: '1s' }} />
+                  <div className="absolute bottom-8 left-8 w-24 h-16 bg-accent/20 -rotate-6 collage-shadow animate-float" 
+                       style={{ animationDelay: '1.5s' }} />
+                  <div className="absolute top-1/2 left-0 w-16 h-16 bg-muted rotate-45 collage-shadow animate-float"
+                       style={{ animationDelay: '2s' }} />
                 </div>
               </div>
             </div>
