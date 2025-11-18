@@ -14,7 +14,7 @@ const translations = {
     nav_benefits: 'Преимущества',
     nav_works: 'Работы',
     nav_contacts: 'Контакты',
-    hero_title: 'Playable Ads, которые действительно играют',
+    hero_title: 'Playable Ads, в которые действительно играют',
     hero_subtitle: 'Создаём интерактивную рекламу, которая вовлекает с первых секунд.',
     benefits_title: 'Преимущества Playable Ads',
     benefit_1_title: 'Больше вовлечения',
