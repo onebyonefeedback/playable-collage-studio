@@ -9,6 +9,8 @@ import {
 } from '@/components/ui/dialog';
 import { Play } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
+import {useNavigate} from "react-router-dom";
+import {useToast} from "@/hooks/use-toast.ts";
 
 interface PortfolioItem {
   id: string;
@@ -18,6 +20,13 @@ interface PortfolioItem {
   playable_url: string | null;
   display_order: number;
 }
+
+function driveToDirectLink(url: string) {
+    const match = url.match(/\/d\/(.*?)\//);
+    if (!match) return url;
+    return `https://drive.google.com/uc?export=download&id=${match[1]}`;
+}
+
 
 export const PortfolioSection = () => {
   const { t } = useLanguage();
@@ -109,22 +118,7 @@ export const PortfolioSection = () => {
                 <div className="relative overflow-hidden collage-shadow bg-background hover:scale-105 transition-all duration-500 tape-effect">
                   {/* Vertical aspect ratio container */}
                   <div className="relative aspect-[9/16] overflow-hidden">
-                    {item.video_url ? (
-                      <>
-                        <video
-                          ref={(el) => (videoRefs.current[item.id] = el)}
-                          src={item.video_url}
-                          className="w-full h-full object-cover"
-                          loop
-                          muted
-                          playsInline
-                          preload="metadata"
-                        />
-                        <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-all duration-500 flex items-center justify-center">
-                          <Play className="w-16 h-16 text-accent animate-pulse" />
-                        </div>
-                      </>
-                    ) : (
+                    {(
                       <>
                         <img
                           src={item.thumbnail_url}
