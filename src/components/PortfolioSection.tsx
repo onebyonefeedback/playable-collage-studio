@@ -118,7 +118,17 @@ export const PortfolioSection = () => {
                 <div className="relative overflow-hidden collage-shadow bg-background hover:scale-105 transition-all duration-500 tape-effect">
                   {/* Vertical aspect ratio container */}
                   <div className="relative aspect-[9/16] overflow-hidden">
-                    {(
+
+                    {item.video_url? (
+                            <iframe
+                                src={item.video_url.replace('/view', '/preview')}
+                                width="100%"
+                                height="100%"
+                                allow="autoplay"
+                                title={item.title}
+                            />
+                        ) :
+                        (
                       <>
                         <img
                           src={item.thumbnail_url}
