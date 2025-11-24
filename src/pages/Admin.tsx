@@ -226,31 +226,34 @@ export default function Admin() {
                                 />
                             </div>
                             <div>
-                                <Label htmlFor="thumbnailFile">Thumbnail Image *</Label>
+                                <Label htmlFor="thumbnailFile">Thumbnail Image * (upload from computer)</Label>
                                 <Input
                                     id="thumbnailFile"
                                     type="file"
                                     accept="image/*"
                                     onChange={(e) => setNewItem({...newItem, thumbnailFile: e.target.files?.[0] || null})}
                                     required
+                                    className="cursor-pointer"
                                 />
                             </div>
                             <div>
-                                <Label htmlFor="videoFile">Video Preview (optional)</Label>
+                                <Label htmlFor="videoFile">Video Preview (optional - upload from computer)</Label>
                                 <Input
                                     id="videoFile"
                                     type="file"
                                     accept="video/*"
                                     onChange={(e) => setNewItem({...newItem, videoFile: e.target.files?.[0] || null})}
+                                    className="cursor-pointer"
                                 />
                             </div>
                             <div>
-                                <Label htmlFor="playableFile">Playable Ad HTML (optional)</Label>
+                                <Label htmlFor="playableFile">Playable Ad HTML (optional - upload from computer)</Label>
                                 <Input
                                     id="playableFile"
                                     type="file"
                                     accept=".html"
                                     onChange={(e) => setNewItem({...newItem, playableFile: e.target.files?.[0] || null})}
+                                    className="cursor-pointer"
                                 />
                             </div>
                             </div>
