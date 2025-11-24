@@ -2,6 +2,7 @@ import { Navigation } from '@/components/Navigation';
 import { HeroSection } from '@/components/HeroSection';
 import { BenefitsSection } from '@/components/BenefitsSection';
 import { PortfolioSection } from '@/components/PortfolioSection';
+import { WorkflowSection } from '@/components/WorkflowSection';
 import { ContactSection } from '@/components/ContactSection';
 import { LanguageProvider } from '@/contexts/LanguageContext';
 
@@ -13,6 +14,7 @@ const Index = () => {
         <HeroSection />
         <BenefitsSection />
         <PortfolioSection />
+        <WorkflowSection />
         <ContactSection />
       </div>
     </LanguageProvider>

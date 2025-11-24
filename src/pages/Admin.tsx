@@ -24,8 +24,8 @@ export default function Admin() {
     const [portfolioItems, setPortfolioItems] = useState<PortfolioItem[]>([]);
     const [newItem, setNewItem] = useState({
         title: '',
-        thumbnail_url: '',
-        video_url: '',
+        thumbnailFile: null as File | null,
+        videoFile: null as File | null,
         playableFile: null as File | null,
     });
 
@@ -62,68 +62,92 @@ export default function Admin() {
         }
     };
 
-    // обработчик выбора файла
-    const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        if (e.target.files?.[0]) {
-            setNewItem({...newItem, playableFile: e.target.files[0]});
-        }
-    };
-
     const handleAddItem = async (e: React.FormEvent) => {
         e.preventDefault();
-        let playable_url = '';
+        
+        try {
+            let thumbnail_url = '';
+            let video_url = '';
+            let playable_url = '';
 
-        if (newItem.playableFile) {
-            const { data, error } = await supabase.storage.createBucket('playables', {
-                public: true, // если нужен публичный доступ
-            });
+            // Upload thumbnail
+            if (newItem.thumbnailFile) {
+                const fileName = `thumbnails/${Date.now()}-${newItem.thumbnailFile.name}`;
+                const { error: uploadError } = await supabase.storage
+                    .from('playables')
+                    .upload(fileName, newItem.thumbnailFile);
 
-            if (error) {
-                console.error('Failed to create bucket:', error);
-            } else {
-                console.log('Bucket created:', data);
+                if (uploadError) throw uploadError;
+                
+                const { data } = supabase.storage.from('playables').getPublicUrl(fileName);
+                thumbnail_url = data.publicUrl;
             }
 
-            const fileName = `${Date.now()}-${newItem.playableFile.name}`;
-            const { error: uploadError } = await supabase.storage
-                .from('playables')
-                .upload(fileName, newItem.playableFile, { contentType: 'text/html' });
+            // Upload video
+            if (newItem.videoFile) {
+                const fileName = `videos/${Date.now()}-${newItem.videoFile.name}`;
+                const { error: uploadError } = await supabase.storage
+                    .from('playables')
+                    .upload(fileName, newItem.videoFile);
 
-            if (uploadError) {
-                console.error(uploadError);
-                toast({
-                    title: 'Error',
-                    description: 'Failed to upload playable file',
-                    variant: 'destructive',
-                });
-            } else {
+                if (uploadError) throw uploadError;
+                
+                const { data } = supabase.storage.from('playables').getPublicUrl(fileName);
+                video_url = data.publicUrl;
+            }
+
+            // Upload playable HTML
+            if (newItem.playableFile) {
+                const fileName = `playables/${Date.now()}-${newItem.playableFile.name}`;
+                const { error: uploadError } = await supabase.storage
+                    .from('playables')
+                    .upload(fileName, newItem.playableFile, { contentType: 'text/html' });
+
+                if (uploadError) throw uploadError;
+                
                 const { data } = supabase.storage.from('playables').getPublicUrl(fileName);
                 playable_url = data.publicUrl;
             }
-        }
 
-        const { error } = await supabase.from('portfolio_items').insert([{
-            title: newItem.title,
-            thumbnail_url: newItem.thumbnail_url,
-            video_url: newItem.video_url,
-            playable_url,
-            display_order: portfolioItems.length,
-        }]);
+            if (!thumbnail_url) {
+                toast({
+                    title: 'Error',
+                    description: 'Thumbnail is required',
+                    variant: 'destructive',
+                });
+                return;
+            }
 
-        if (error) {
+            const { error } = await supabase.from('portfolio_items').insert([{
+                title: newItem.title,
+                thumbnail_url,
+                video_url: video_url || null,
+                playable_url: playable_url || null,
+                display_order: portfolioItems.length,
+            }]);
+
+            if (error) throw error;
+
+            toast({
+                title: 'Success',
+                description: 'Portfolio item added successfully',
+            });
+            
+            setNewItem({ 
+                title: '', 
+                thumbnailFile: null, 
+                videoFile: null, 
+                playableFile: null 
+            });
+            
+            fetchPortfolioItems();
+        } catch (error) {
             console.error(error);
             toast({
                 title: 'Error',
                 description: 'Failed to add portfolio item',
                 variant: 'destructive',
             });
-        } else {
-            toast({
-                title: 'Success',
-                description: 'Portfolio item added successfully',
-            });
-            setNewItem({ title: '', thumbnail_url: '', video_url: '', playableFile: null });
-            fetchPortfolioItems();
         }
     };
 
@@ -192,41 +216,43 @@ export default function Admin() {
                     <CardContent>
                         <form onSubmit={handleAddItem} className="space-y-4">
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                <div>
-                                    <Label htmlFor="title">Title *</Label>
-                                    <Input
-                                        id="title"
-                                        value={newItem.title}
-                                        onChange={(e) => setNewItem({...newItem, title: e.target.value})}
-                                        required
-                                    />
-                                </div>
-                                <div>
-                                    <Label htmlFor="thumbnail">Thumbnail URL *</Label>
-                                    <Input
-                                        id="thumbnail"
-                                        value={newItem.thumbnail_url}
-                                        onChange={(e) => setNewItem({...newItem, thumbnail_url: e.target.value})}
-                                        required
-                                    />
-                                </div>
-                                <div>
-                                    <Label htmlFor="video">Video Preview URL (optional)</Label>
-                                    <Input
-                                        id="video"
-                                        value={newItem.video_url}
-                                        onChange={(e) => setNewItem({...newItem, video_url: e.target.value})}
-                                    />
-                                </div>
-                                <div>
-                                    <Label htmlFor="playableFile">Playable Ad (HTML file)</Label>
-                                    <input
-                                        id="playableFile"
-                                        type="file"
-                                        accept=".html"
-                                        onChange={handleFileChange}
-                                    />
-                                </div>
+                            <div>
+                                <Label htmlFor="title">Title *</Label>
+                                <Input
+                                    id="title"
+                                    value={newItem.title}
+                                    onChange={(e) => setNewItem({...newItem, title: e.target.value})}
+                                    required
+                                />
+                            </div>
+                            <div>
+                                <Label htmlFor="thumbnailFile">Thumbnail Image *</Label>
+                                <Input
+                                    id="thumbnailFile"
+                                    type="file"
+                                    accept="image/*"
+                                    onChange={(e) => setNewItem({...newItem, thumbnailFile: e.target.files?.[0] || null})}
+                                    required
+                                />
+                            </div>
+                            <div>
+                                <Label htmlFor="videoFile">Video Preview (optional)</Label>
+                                <Input
+                                    id="videoFile"
+                                    type="file"
+                                    accept="video/*"
+                                    onChange={(e) => setNewItem({...newItem, videoFile: e.target.files?.[0] || null})}
+                                />
+                            </div>
+                            <div>
+                                <Label htmlFor="playableFile">Playable Ad HTML (optional)</Label>
+                                <Input
+                                    id="playableFile"
+                                    type="file"
+                                    accept=".html"
+                                    onChange={(e) => setNewItem({...newItem, playableFile: e.target.files?.[0] || null})}
+                                />
+                            </div>
                             </div>
                             <Button type="submit" className="w-full">
                                 <Plus className="w-4 h-4 mr-2"/>
