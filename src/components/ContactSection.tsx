@@ -93,16 +93,23 @@ export const ContactSection = () => {
               </Button>
 
               <div className="text-center pt-4 border-t-2 border-foreground/20">
-                <p className="font-mono text-sm mb-2">{t('contact_telegram')}</p>
-                <a
-                  href="https://t.me/yourusername"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 text-accent hover:underline font-bold"
-                >
-                  @yourusername
-                  <ExternalLink className="w-4 h-4" />
-                </a>
+                <p className="font-mono text-sm mb-3">{t('contact_telegram')}</p>
+                <div className="space-y-2">
+                  <a
+                    href="https://t.me/evemonaro"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-2 text-accent hover:underline font-bold"
+                  >
+                    @evemonaro
+                    <ExternalLink className="w-4 h-4" />
+                  </a>
+                  <p className="font-mono text-sm">
+                    <a href="mailto:onebyone.feedback@gmail.com" className="text-accent hover:underline">
+                      onebyone.feedback@gmail.com
+                    </a>
+                  </p>
+                </div>
               </div>
             </form>
           </div>
