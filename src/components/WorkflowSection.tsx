@@ -1,5 +1,5 @@
 import { useLanguage } from '@/contexts/LanguageContext';
-import { CheckCircle2 } from 'lucide-react';
+import duckLogo from '@/assets/duck-logo.png';
 
 export const WorkflowSection = () => {
   const { t } = useLanguage();
@@ -17,7 +17,7 @@ export const WorkflowSection = () => {
   return (
     <section id="workflow" className="min-h-screen py-24 bg-background relative overflow-hidden">
       <div className="container mx-auto px-4">
-        <div className="text-center mb-16 animate-fade-in-up">
+        <div className="text-center mb-20 animate-fade-in-up">
           <h2 className="text-5xl lg:text-7xl font-bold mb-4 rotate-chaos-1 inline-block">
             {t('workflow_title')}
           </h2>
@@ -26,43 +26,72 @@ export const WorkflowSection = () => {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
-          {steps.map((step, index) => (
-            <div
-              key={step.key}
-              className={`relative group animate-fade-in-up ${
-                index % 3 === 0 ? 'rotate-chaos-1' : index % 3 === 1 ? 'rotate-chaos-2' : 'rotate-chaos-3'
-              }`}
-              style={{ animationDelay: `${index * 0.1}s` }}
-            >
-              <div className="bg-paper p-6 collage-shadow tape-effect hover:scale-105 transition-all duration-300">
-                <div className="flex items-start gap-4">
-                  <div className="text-5xl flex-shrink-0 animate-bounce" style={{ animationDelay: `${index * 0.2}s` }}>
+        {/* Roadmap with duck */}
+        <div className="relative max-w-7xl mx-auto">
+          {/* Road/Path */}
+          <div className="absolute left-0 right-0 top-1/2 h-2 bg-gradient-to-r from-muted via-accent/30 to-muted -translate-y-1/2 -z-10" 
+               style={{ 
+                 clipPath: 'polygon(0 0, 100% 0, 98% 100%, 2% 100%)',
+                 filter: 'drop-shadow(0 4px 6px rgba(0,0,0,0.1))'
+               }} 
+          />
+          
+          {/* Steps connected by road */}
+          <div className="relative flex justify-between items-center py-12">
+            {steps.map((step, index) => (
+              <div
+                key={step.key}
+                className="relative flex flex-col items-center animate-fade-in-up"
+                style={{ 
+                  animationDelay: `${index * 0.15}s`,
+                  zIndex: 10 
+                }}
+              >
+                {/* Connection dot on road */}
+                <div className={`w-6 h-6 rounded-full bg-accent border-4 border-background collage-shadow mb-4 ${
+                  index === 0 ? 'animate-pulse' : ''
+                }`} />
+                
+                {/* Step card */}
+                <div className={`relative group bg-paper p-6 w-32 collage-shadow tape-effect hover:scale-110 transition-all duration-300 ${
+                  index % 2 === 0 ? 'rotate-chaos-1' : 'rotate-chaos-2'
+                }`}>
+                  <div className="text-3xl mb-2 text-center animate-bounce" 
+                       style={{ animationDelay: `${index * 0.2}s`, animationDuration: '2s' }}>
                     {step.icon}
                   </div>
-                  <div className="flex-1">
-                    <div className="flex items-center gap-2 mb-2">
-                      <span className="text-sm font-bold font-mono bg-accent text-background px-2 py-1">
-                        {index + 1}
-                      </span>
-                      <CheckCircle2 className="w-5 h-5 text-accent" />
-                    </div>
-                    <p className="font-mono text-sm leading-relaxed">
-                      {t(step.key)}
-                    </p>
+                  <div className="text-xs font-bold font-mono bg-accent text-background px-2 py-1 mb-2 text-center">
+                    {index + 1}
                   </div>
+                  <p className="font-mono text-[10px] leading-tight text-center">
+                    {t(step.key)}
+                  </p>
+                  
+                  {/* Torn corner */}
+                  <div className="absolute bottom-0 right-0 w-0 h-0 border-l-[15px] border-l-transparent border-b-[15px] border-b-muted" />
                 </div>
-
-                {/* Torn paper corner */}
-                <div className="absolute bottom-0 right-0 w-0 h-0 border-l-[20px] border-l-transparent border-b-[20px] border-b-muted" />
               </div>
-            </div>
-          ))}
+            ))}
+          </div>
+
+          {/* Duck traveling on the road */}
+          <div className="absolute left-0 top-1/2 -translate-y-1/2 w-20 h-20 animate-[slide-in-right_20s_linear_infinite]">
+            <img 
+              src={duckLogo} 
+              alt="Duck" 
+              className="w-full h-full object-contain drop-shadow-lg"
+              style={{ 
+                filter: 'drop-shadow(0 4px 8px rgba(0,0,0,0.3))',
+                animation: 'slide-in-right 20s linear infinite, bounce 1s ease-in-out infinite'
+              }}
+            />
+          </div>
         </div>
 
-        {/* Decorative background elements */}
-        <div className="absolute top-10 left-10 w-32 h-32 bg-accent/10 rotate-45 -z-10" />
-        <div className="absolute bottom-10 right-10 w-40 h-40 bg-muted/20 rotate-12 -z-10" />
+        {/* Decorative collage elements */}
+        <div className="absolute top-10 left-10 w-32 h-32 bg-accent/10 rotate-45 -z-20 collage-shadow" />
+        <div className="absolute bottom-10 right-10 w-40 h-40 bg-muted/20 rotate-12 -z-20 tape-effect" />
+        <div className="absolute top-1/3 right-20 w-24 h-24 bg-paper/50 -rotate-12 -z-20 collage-shadow" />
       </div>
     </section>
   );
