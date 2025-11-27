@@ -1,0 +1,14 @@
+[
+  {
+    "id": "playable1",
+    "title": "Playable 1",
+    "previewVideo": "/playables/playable 1/preview.mp4",
+    "html": "/playables/playable 1/playable.html"
+  },
+  {
+    "id": "playable2",
+    "title": "Playable 2",
+    "previewImage": "/playables/playable 2/preview.png",
+    "html": "/playables/playable 2/playable.html"
+  }
+]
