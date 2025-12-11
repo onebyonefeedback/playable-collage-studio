@@ -1,14 +1,24 @@
 [
   {
     "id": "playable1",
-    "title": "Playable 1",
-    "previewVideo": "/playables/playable 1/preview.mp4",
+    "title": "ARENA",
+    "previewImage": "/playables/playable 1/ARENA.png",
+    "previewVideo": "/playables/playable 1/ARENA.mov",
     "html": "/playables/playable 1/playable.html"
   },
   {
     "id": "playable2",
-    "title": "Playable 2",
-    "previewImage": "/playables/playable 2/preview.png",
-    "html": "/playables/playable 2/playable.html"
+    "title": "BUILDER",
+    "previewImage": "/playables/playable 2/BUILD.png",
+    "previewVideo": "/playables/playable 2/BUILD.mov",
+    "html": "/playables/playable 2/BUILD_play_001.html"
+  },
+  
+  {
+    "id": "playable3",
+    "title": "HOMELESS IDLE",
+    "previewImage": "/playables/playable 3/BOMG_0301.png",
+    "previewVideo": "/playables/playable 3/BOMG_0301.mov",
+    "html": "/playables/playable 3/BOMG_play_003_01.html"
   }
 ]
